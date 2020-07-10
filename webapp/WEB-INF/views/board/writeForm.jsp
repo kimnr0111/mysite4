@@ -54,6 +54,9 @@
 							<textarea id="txt-content" name="content"></textarea>
 						</div>
 						<input type="hidden" name="userNo" value="${sessionScope.authUser.no}">
+						<input type="text" name="groupNo" value="${groupNo}">
+						<input type="text" name="orderNo" value="${orderNo + 1}">
+						<input type="text" name="depth" value="${depth + 1}">
 						<a id="btn_cancel" href="${pageContext.request.contextPath}/board/list">취소</a>
 						<button id="btn_add" type="submit" >등록</button>
 						

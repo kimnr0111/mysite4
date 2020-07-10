@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-
+	<!--
 	<select id="selectList" resultType="com.javaex.vo.BoardVo">
 		<![CDATA[
 			select  bo.no,
@@ -17,7 +17,49 @@
 			order by no asc
 		]]>
 	</select>
+	 -->
+	 <select id="selectList" resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			select  bo.no,
+        			bo.title,
+        			bo.content,
+        			bo.hit,
+        			bo.reg_date as boarddate,
+        			bo.user_no as userno,
+        			ur.name,
+        			bo.group_no as groupno,
+        			bo.order_no as orderno,
+        			bo.depth
+			from replyboard bo, users ur
+			where bo.user_no = ur.no
+			order by groupno desc,
+			orderno asc
+			
+		]]>
+	</select>
 	
+	<select id="searchList" parameterType="String" resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			select  bo.no,
+        			bo.title,
+        			bo.content,
+        			bo.hit,
+        			bo.reg_date as boarddate,
+        			bo.user_no as userno,
+        			ur.name,
+        			bo.group_no as groupno,
+        			bo.order_no as orderno,
+        			bo.depth
+			from replyboard bo, users ur
+			where bo.user_no = ur.no
+			and bo.title like #{search}
+			order by groupno desc,
+			orderno asc
+			
+		]]>
+	</select>
+	 
+	<!-- 
 	<select id="select" parameterType="int" resultType="com.javaex.vo.BoardVo">
 		<![CDATA[
 			select bo.no,
@@ -32,6 +74,25 @@
 			and bo.no = #{no}
 		]]>
 	</select>
+	 -->
+	 
+	 <select id="select" parameterType="int" resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			select bo.no,
+				   ur.name,
+	       		   bo.reg_date as boarddate,
+	       		   bo.title,
+	       		   bo.content,
+	       		   bo.user_no as userno,
+	       		   bo.hit,
+	       		   bo.group_no as groupno,
+	       		   bo.order_no as orderno,
+	       		   bo.depth
+			from replyboard bo, users ur
+			where bo.user_no = ur.no
+			and bo.no = #{no}
+		]]>
+	</select>
 	
 	<update id="addHit" parameterType="int">
 		<![CDATA[
@@ -41,23 +102,59 @@
 		]]>
 	</update>
 	
+	<!--
 	<insert id="boardInsert" parameterType="com.javaex.vo.BoardVo">
 		<![CDATA[
 			insert into board
 			values(seq_board_no.nextval, #{title}, #{content}, 0, sysdate, #{userNo})
 		]]>
 	</insert>
+	 -->
+	 
+	 <insert id="boardInsert" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			insert into replyboard
+			values(seq_board_no2.nextval, #{title}, #{content}, 0, sysdate, #{userNo}, seq_board_no2.nextval, 1, 0)
+		]]>
+	</insert>
 	
+	<insert id="replyboardInsert" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			insert into replyboard
+			values(seq_board_no2.nextval, #{title}, #{content}, 0, sysdate, #{userNo}, #{groupNo}, #{orderNo}, #{depth})
+		]]>
+	</insert>
+	
+	<!-- 
 	<delete id="boardDelete" parameterType="int">
 		<![CDATA[
 			delete from board
 			where no = #{no}
 		]]>
 	</delete>
+	 -->
+	 
+	 <delete id="boardDelete" parameterType="int">
+		<![CDATA[
+			delete from replyboard
+			where group_no = #{groupNo}
+		]]>
+	</delete>
 	
+	<!-- 
 	<update id="boardUpdate" parameterType="com.javaex.vo.BoardVo">
 		<![CDATA[
 			update board
+			set title = #{title},
+				content = #{content}
+			where no = #{no}
+		]]>
+	</update>
+	 -->
+	 
+	 <update id="boardUpdate" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			update replyboard
 			set title = #{title},
 				content = #{content}
 			where no = #{no}

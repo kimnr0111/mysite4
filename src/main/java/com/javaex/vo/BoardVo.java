@@ -9,10 +9,16 @@ public class BoardVo {
 	private String boarddate;
 	private int userNo;
 	private String name;
+	private int groupNo;
+	private int orderNo;
+	private int depth;
 	
 	public BoardVo() {}
 	
-	public BoardVo(int no, String title, String content, int hit, String boarddate, int userNo, String name) {
+	
+
+	public BoardVo(int no, String title, String content, int hit, String boarddate, int userNo, String name,
+			int groupNo, int orderNo, int depth) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
@@ -20,7 +26,12 @@ public class BoardVo {
 		this.boarddate = boarddate;
 		this.userNo = userNo;
 		this.name = name;
+		this.groupNo = groupNo;
+		this.orderNo = orderNo;
+		this.depth = depth;
 	}
+
+
 
 	public int getNo() {
 		return no;
@@ -65,10 +76,39 @@ public class BoardVo {
 		this.name = name;
 	}
 
+	public int getGroupNo() {
+		return groupNo;
+	}
+
+	public void setGroupNo(int groupNo) {
+		this.groupNo = groupNo;
+	}
+
+	public int getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "\nBoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", boarddate="
-				+ boarddate + ", userNo=" + userNo + ", name=" + name + "]";
-	}	
+		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", boarddate="
+				+ boarddate + ", userNo=" + userNo + ", name=" + name + ", groupNo=" + groupNo + ", orderNo=" + orderNo
+				+ ", depth=" + depth + "]";
+	}
+
+	
 
 }

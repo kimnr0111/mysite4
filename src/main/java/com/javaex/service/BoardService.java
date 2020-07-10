@@ -14,10 +14,10 @@ public class BoardService {
 	@Autowired
 	BoardDao boardDao;
 	
-	public List<BoardVo> getBoardList() {
+	public List<BoardVo> getBoardList(String search) {
 		System.out.println("BoardService:getBoardList");
 				
-		return boardDao.getBoardList();
+		return boardDao.getBoardList(search);
 	}
 	
 	public BoardVo getBoard(int no) {
@@ -34,25 +34,20 @@ public class BoardService {
 	public int boardInsert(BoardVo boardVo) {
 		System.out.println("boardService:boardInsert");
 		
-		boardDao.boardInsert(boardVo);
-		
-		return 0;
+		return boardDao.boardInsert(boardVo);
 	}
 	
 	public int boardDelete(int no) {
 		System.out.println("boardService:boardDelete");
 		
-		boardDao.boardDelete(no);
-		
-		return 0;
+		return boardDao.boardDelete(no);
 	}
 	
 	public int boardUpdate(BoardVo boardVo) {
 		System.out.println("boardService:boardUpdate");
 		
-		boardDao.boardUpdate(boardVo);
 		
-		return 0;
+		return boardDao.boardUpdate(boardVo);
 	}
 
 }

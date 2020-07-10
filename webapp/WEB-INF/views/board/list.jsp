@@ -41,9 +41,9 @@
 
 			<div id="board">
 				<div id="list">
-					<form action="" method="">
+					<form action="${pageContext.request.contextPath}/board/list" method="get">
 						<div class="form-group text-right">
-							<input type="text">
+							<input type="text" name="search">
 							<button type="submit" id=btn_search>검색</button>
 						</div>
 					</form>
@@ -62,13 +62,18 @@
 						<c:forEach items="${bList}" var="vo" varStatus="status">
 							<tr>
 								<td>${vo.no }</td>
-								<td class="text-left"><a href="${pageContext.request.contextPath}/board/read?no=${vo.no }">${vo.title }</a></td>
+								<td class="text-left">
+								<c:forEach  begin="0" end="${vo.depth}">
+								&ensp;
+								</c:forEach>
+								<a href="${pageContext.request.contextPath}/board/read?no=${vo.no }">${vo.title }</a>
+								</td>
 								<td>${vo.name }</td>
 								<td>${vo.hit }</td>
 								<td>${vo.boarddate }</td>
 								<td>
 								<c:if test="${vo.userNo == sessionScope.authUser.no }">
-									<a href="${pageContext.request.contextPath}/board/delete?no=${vo.no }">[삭제]</a>
+									<a href="${pageContext.request.contextPath}/board/delete?no=${vo.groupNo }">[삭제]</a>
 								</c:if>
 								</td>
 							</tr>

@@ -1,5 +1,6 @@
 package com.javaex.controller;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping(value="list", method = {RequestMethod.GET, RequestMethod.POST})
-	public String list(Model model) {
+	public String list(Model model, @RequestParam(value="search", required=false, defaultValue="") String search) {
 		System.out.println("/board/list");
 		
-		List<BoardVo> bList = boardService.getBoardList();
+		List<BoardVo> bList = boardService.getBoardList(search);
 		System.out.println(bList.toString());
 		model.addAttribute("bList", bList);
 		
@@ -45,8 +46,14 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="writeForm", method = {RequestMethod.GET, RequestMethod.POST})
-	public String writeForm() {
+	public String writeForm(Model model, @RequestParam(value="groupno", required=false, defaultValue="0") int groupNo,
+										 @RequestParam(value="orderno", required=false, defaultValue="0") int orderNo,
+										 @RequestParam(value="depth", required=false, defaultValue="0") int depth) {
 		System.out.println("/board/writeForm");
+		
+		model.addAttribute("groupNo", groupNo);
+		model.addAttribute("orderNo", orderNo);
+		model.addAttribute("depth", depth);
 		
 		return "board/writeForm";
 	}
@@ -59,7 +66,7 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
-	
+
 	@RequestMapping(value="delete", method = {RequestMethod.GET, RequestMethod.POST})
 	public String delete(@RequestParam("no") int no) {
 		System.out.println("/board/delete");
@@ -84,11 +91,12 @@ public class BoardController {
 	@RequestMapping(value="modify", method = {RequestMethod.GET, RequestMethod.POST})
 	public String modify(@ModelAttribute BoardVo boardVo) {
 		System.out.println("/board/modify");
-		
+		System.out.println(boardVo.toString());
 		boardService.boardUpdate(boardVo);
 
 		
 		return "redirect:/board/list";
 	}
+
 
 }
