@@ -76,7 +76,10 @@
 							<a id="btn_modify" href="${pageContext.request.contextPath}/board/modifyForm?no=${vo.no}">수정</a>
 						</c:if>
 							<a id="btn_modify" href="${pageContext.request.contextPath}/board/list">목록</a>
+						<c:if test="${sessionScope.authUser != null }">
 							<a id="btn_modify" href="${pageContext.request.contextPath}/board/writeForm?groupno=${vo.groupNo}&orderno=${vo.orderNo}&depth=${vo.depth}">글쓰기</a>
+						</c:if>
+							
 						
 					</form>
 	                <!-- //form -->

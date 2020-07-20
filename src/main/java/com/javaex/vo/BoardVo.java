@@ -12,13 +12,15 @@ public class BoardVo {
 	private int groupNo;
 	private int orderNo;
 	private int depth;
+	private int listCnt;
+	private int curPage;
 	
 	public BoardVo() {}
 	
 	
 
 	public BoardVo(int no, String title, String content, int hit, String boarddate, int userNo, String name,
-			int groupNo, int orderNo, int depth) {
+			int groupNo, int orderNo, int depth, int listCnt, int curPage) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
@@ -29,6 +31,8 @@ public class BoardVo {
 		this.groupNo = groupNo;
 		this.orderNo = orderNo;
 		this.depth = depth;
+		this.listCnt = listCnt;
+		this.curPage = curPage;
 	}
 
 
@@ -100,7 +104,21 @@ public class BoardVo {
 		this.depth = depth;
 	}
 
+	public int getListCnt() {
+		return listCnt;
+	}
 
+	public void setListCnt(int listCnt) {
+		this.listCnt = listCnt;
+	}
+
+	public int getCurPage() {
+		return curPage;
+	}
+
+	public void setCurPage(int curPage) {
+		this.curPage = curPage;
+	}
 
 	@Override
 	public String toString() {

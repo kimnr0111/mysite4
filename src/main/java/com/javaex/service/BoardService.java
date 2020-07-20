@@ -14,10 +14,10 @@ public class BoardService {
 	@Autowired
 	BoardDao boardDao;
 	
-	public List<BoardVo> getBoardList(String search) {
+	public List<BoardVo> getBoardList(String search, int curPage) {
 		System.out.println("BoardService:getBoardList");
 				
-		return boardDao.getBoardList(search);
+		return boardDao.getBoardList(search, curPage);
 	}
 	
 	public BoardVo getBoard(int no) {
@@ -48,6 +48,12 @@ public class BoardService {
 		
 		
 		return boardDao.boardUpdate(boardVo);
+	}
+	
+	public int getList() {
+		System.out.println("boardService:getList");	
+
+		return boardDao.getList();
 	}
 
 }

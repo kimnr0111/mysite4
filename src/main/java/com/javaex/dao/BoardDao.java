@@ -14,13 +14,13 @@ public class BoardDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BoardVo> getBoardList(String search) {
+	public List<BoardVo> getBoardList(String search, int curPage) {
 		System.out.println("BoardDao:getBoardList");
 		System.out.println("search=" + search);
 		
 		if("".equals(search)) {
 			System.out.println("기본");
-			List<BoardVo> boardList = sqlSession.selectList("board.selectList");
+			List<BoardVo> boardList = sqlSession.selectList("board.selectList", curPage);
 			return boardList;
 		} else {
 			System.out.println("검색");
@@ -47,12 +47,16 @@ public class BoardDao {
 	public int boardInsert(BoardVo boardVo) {
 		System.out.println("boardDao.boardInsert");
 		
-		if(boardVo.getGroupNo() == 0) {
-			sqlSession.insert("board.boardInsert", boardVo);
+		if("".equals(boardVo.getTitle()) || "".equals(boardVo.getContent())) {
+			System.out.println("다시 입력");
 		} else {
-			sqlSession.insert("board.replyboardInsert", boardVo);
+			if(boardVo.getGroupNo() == 0) {
+				sqlSession.insert("board.boardInsert", boardVo);
+			} else {
+				sqlSession.insert("board.replyboardInsert", boardVo);
+			}
+			System.out.println(boardVo.toString());
 		}
-		System.out.println(boardVo.toString());
 		
 		return 0;
 	}
@@ -71,6 +75,13 @@ public class BoardDao {
 		sqlSession.update("board.boardUpdate", boardVo);
 		
 		return 0;
+	}
+
+	
+	public int getList() {
+		System.out.println("boardDao:getList");
+			
+		return sqlSession.selectOne("board.getListCnt");
 	}
 	
 

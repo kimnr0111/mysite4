@@ -33,9 +33,19 @@ public class GuestDao {
 		
 		System.out.println("GuestDao.contentsDelete");
 		
-		sqlSession.delete("guest.delete", guestVo);
-		
-		return 0;
+		return sqlSession.delete("guest.delete", guestVo);
+	}
+	
+	public void insertSelectKey(GuestVo guestVo) {
+		System.out.println("GuestDao.insertSelectKey");
+		System.out.println(guestVo.toString()); //no값 있음
+		sqlSession.insert("guest.insertSelectKey", guestVo);
+		System.out.println(guestVo.toString()); //no값 없음
+	}
+	
+	public GuestVo selectByNo(int no) {
+		System.out.println("guestDao.selectByNo");
+		return sqlSession.selectOne("guest.selectByNo", no);
 	}
 
 }

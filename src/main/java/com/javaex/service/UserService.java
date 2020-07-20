@@ -36,5 +36,22 @@ public class UserService {
 
 		return userDao.selectId(no);
 	}
+	
+	public boolean checkId(String id) {
+		System.out.println("userService:checkId");
+		System.out.println(id);
+		UserVo userVo = userDao.selectUser(id);
+		
+		boolean result;
+		if(userVo == null) {
+			System.out.println("비었음");
+			result = true;
+		} else {
+			System.out.println("값있음");
+			result = false;
+		}
+		
+		return result;
+	}
 
 }

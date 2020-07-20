@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="guest">
-
+	
+	<!-- 방명록 글 불러오기 -->
 	<select id="selectList" resultType="com.javaex.vo.GuestVo">
 		<![CDATA[
 			select no,
@@ -15,13 +16,16 @@
 		]]>
 	</select>
 	
+	<!-- 방명록 글 저장 -->
 	<insert id="insert" parameterType="com.javaex.vo.GuestVo">
+	<!-- seq_no.nextval 대신 no 사용하는게 좋음(selectKey 사용) -->
 		<![CDATA[
 			INSERT INTO guestbook
 			VALUES (seq_no.nextval, #{name}, #{password}, #{content}, sysdate)
 		]]>
 	</insert>
 	
+	<!-- 방명록 글 삭제 -->
 	<delete id="delete">
 		<![CDATA[
 			delete
@@ -30,5 +34,34 @@
 			and password = #{password}
 		]]>
 	</delete>
+	
+	<!-- 방명록 글 저장(ajax) -->
+	<insert id="insertSelectKey" parameterType="com.javaex.vo.GuestVo">
+		<!-- 비어있던 no에 seq_no.nextval 값을 넣음 -->
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">	
+			select seq_no.nextval from dual
+		</selectKey>
+		
+		<![CDATA[
+			insert into guestbook
+			values (#{no}, #{name}, #{password}, #{content}, sysdate)
+		]]>
+	</insert>
+	
+	<!-- 저장한 글 가져오기 -->
+	<select id="selectByNo" parameterType="int" resultType="com.javaex.vo.GuestVo">
+		<![CDATA[
+			select no,
+				   name,
+				   password,
+				   content,
+				   reg_date as guestdate
+			from guestbook
+			where no = #{no}
+		]]>
+		
+	</select>
+	
+	
 
 </mapper>

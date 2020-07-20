@@ -31,9 +31,20 @@ public class GuestService {
 	public int contentsDelete(GuestVo guestVo) {
 		System.out.println("GuestService:contentsDelete");
 		
-		guestDao.contentsDelete(guestVo);
+		return guestDao.contentsDelete(guestVo);
+	}
+	
+	//방명록 글 저장(ajax)
+	public GuestVo ajaxContentsInsert(GuestVo guestVo) {
+		System.out.println("GuestService:ajaxContentsInsert");
+		guestDao.insertSelectKey(guestVo);
+		int no = guestVo.getNo();
+		System.out.println(no);
 		
-		return 0;
+		GuestVo vo = guestDao.selectByNo(no);
+		
+		return vo;
+
 	}
 
 }

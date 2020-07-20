@@ -19,11 +19,19 @@
 		]]>
 	</select>
 	
-	<select id="selectId" parameterType="com.javaex.vo.UserVo" resultType="com.javaex.vo.UserVo">
+	<select id="selectId" parameterType="int" resultType="com.javaex.vo.UserVo">
 		<![CDATA[
 			select id, password, name, gender
 			from users
 			where no = #{no}
+		]]>
+	</select>
+	
+	<select id="selectById" parameterType="String" resultType="com.javaex.vo.UserVo">
+		<![CDATA[
+			select no, id
+			from users
+			where id = #{id}
 		]]>
 	</select>
 

@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
@@ -95,6 +97,20 @@ public class UserController {
 		
 		
 		return "redirect:/main";
+	}
+	
+	
+	//아이디체크(ajax)
+	@ResponseBody
+	@RequestMapping(value="idcheck", method= {RequestMethod.GET, RequestMethod.POST})
+	public boolean idcheck(@RequestParam("userId") String id) {
+		System.out.println("/user/idcheck(ajax)");
+		
+		boolean result = userService.checkId(id);
+
+		System.out.println(result);
+		
+		return result;
 	}
 
 }

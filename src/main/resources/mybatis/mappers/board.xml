@@ -18,24 +18,25 @@
 		]]>
 	</select>
 	 -->
-	 <select id="selectList" resultType="com.javaex.vo.BoardVo">
-		<![CDATA[
-			select  bo.no,
-        			bo.title,
-        			bo.content,
-        			bo.hit,
-        			bo.reg_date as boarddate,
-        			bo.user_no as userno,
-        			ur.name,
-        			bo.group_no as groupno,
-        			bo.order_no as orderno,
-        			bo.depth
-			from replyboard bo, users ur
-			where bo.user_no = ur.no
-			order by groupno desc,
-			orderno asc
+	 <select id="selectList" parameterType="com.javaex.vo.BoardVo" resultType="com.javaex.vo.BoardVo">
+
+			select *
+			from (select bo.*, rownum r
+        		  from (select  bo.no,
+                      			bo.title,
+                      			bo.content,
+                      			bo.hit,
+                      			bo.reg_date as boarddate,
+                      			bo.user_no as userno,
+                      			ur.name,
+                      			bo.group_no as groupno,
+                      			bo.order_no as orderno,
+                      			bo.depth
+              			from replyboard bo, users ur
+              			where bo.user_no = ur.no
+              			order by groupno desc, orderno asc) bo)
+			where r <![CDATA[<]]>= #{curPage}*5 and r <![CDATA[>]]> (#{curPage}-1)*5
 			
-		]]>
 	</select>
 	
 	<select id="searchList" parameterType="String" resultType="com.javaex.vo.BoardVo">
@@ -94,9 +95,19 @@
 		]]>
 	</select>
 	
+	<!-- 
 	<update id="addHit" parameterType="int">
 		<![CDATA[
 			update board
+			set hit = hit+1
+			where no = #{no}
+		]]>
+	</update>
+	 -->
+	 
+	 <update id="addHit" parameterType="int">
+		<![CDATA[
+			update replyboard
 			set hit = hit+1
 			where no = #{no}
 		]]>
@@ -160,6 +171,11 @@
 			where no = #{no}
 		]]>
 	</update>
+	
+	<select id="getListCnt" resultType="int">
+		select nvl(max(rownum), 0) as rmax
+		from replyboard
+	</select>
 
 	
 
