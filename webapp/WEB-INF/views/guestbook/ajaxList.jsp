@@ -114,15 +114,6 @@ $(document).ready(function(){
 	
 });
 
-//모달테스트
-/*
-$("#test").on("click", function(){
-	console.log("모달테스트");
-	$("#delModal").modal();
-	
-});
-*/
-
 //삭제버튼 클릭할때
 $("#guestbookListArea").on("click", "a", function(){
 	console.log("리스트 클릭");
@@ -134,8 +125,46 @@ $("#guestbookListArea").on("click", "a", function(){
 	
 	console.log(no);
 	
-	$("#modalNo").val(no);
+	$("#modalNo").val(no); //no값 전달
+	$("#modalPassword").val(""); //password칸 비우기
 	$("#delModal").modal(); //모달창 보이게
+});
+
+//모달창 삭제버튼 클릭
+$("#btnDel").on("click", function(){
+	//이벤트 체크
+	console.log("삭제버튼 클릭");
+	
+	//데이터 수집
+	var password = $("#modalPassword").val();
+	var no = $("#modalNo").val();
+	
+	//데이터 전송 -> 그리기 작업
+	$.ajax({
+		url : "${pageContext.request.contextPath }/api/gb/delete",		
+		type : "post",
+		//contentType : "application/json",
+		data : {password: password, no: no},
+
+		dataType : "json",
+		success : function(count){
+			/*성공시 처리해야될 코드 작성*/
+			console.log(count);
+			if(count == 1) {
+				//모달창 닫기
+				$("#delModal").modal("hide");
+				//리스트 지우기
+				$("#t-" + no).remove();
+			} else {
+				//모달창 닫기
+				$("#delModal").modal("hide");
+			}
+		},
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});
+	
 });
 
 //등록버튼 클릭
@@ -163,8 +192,8 @@ $("#guestAddBtn").on("click", function(){
 	$.ajax({
 		url : "${pageContext.request.contextPath }/api/gb/add",		
 		type : "post",
-		//contentType : "application/json",
-		data : guestbookVo,
+		contentType : "application/json",
+		data : JSON.stringify(guestbookVo),
 
 		dataType : "json",
 		success : function(vo){
@@ -206,7 +235,7 @@ function fetchList(){
 //리스트 그리기
 function render(guestbookVo, direction) {
 	var str = "";
-	str += "<table class='guestRead'>";
+	str += "<table id= 't-"+guestbookVo.no +"'class='guestRead'>";
 	str += "<colgroup>";
 	str += "	<col style='width: 10%;'>";
 	str += "	<col style='width: 40%;'>";

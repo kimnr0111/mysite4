@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ public class ApiGuestbookController {
 	private GuestService guestService;
 	
 	@ResponseBody
-	@RequestMapping(value="/list")
+	@RequestMapping(value="/list", method = {RequestMethod.POST})
 	public List<GuestVo> list() {
 		System.out.println("/api/gb/list");
 		List<GuestVo> guestbookList = guestService.getGuestList();
@@ -30,11 +31,18 @@ public class ApiGuestbookController {
 	
 	@ResponseBody
 	@RequestMapping(value="/add", method = {RequestMethod.POST})
-	public GuestVo add(@ModelAttribute GuestVo guestbookVo) {
+	public GuestVo add(@RequestBody GuestVo guestbookVo) {
 		System.out.println("/api/gb/add");
-		System.out.println(guestbookVo.toString());
 		GuestVo vo = guestService.ajaxContentsInsert(guestbookVo);
-		System.out.println(vo.toString());
+		
 		return vo;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/delete", method = {RequestMethod.POST})
+	public int delete(@ModelAttribute GuestVo guestbookVo) {
+		System.out.println("/api/gb/delete");
+		
+		return guestService.contentsDelete(guestbookVo);
 	}
 }
