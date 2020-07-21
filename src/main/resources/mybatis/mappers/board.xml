@@ -18,8 +18,8 @@
 		]]>
 	</select>
 	 -->
-	 <select id="selectList" parameterType="com.javaex.vo.BoardVo" resultType="com.javaex.vo.BoardVo">
-
+	 <select id="selectList" parameterType="map" resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
 			select *
 			from (select bo.*, rownum r
         		  from (select  bo.no,
@@ -35,7 +35,10 @@
               			from replyboard bo, users ur
               			where bo.user_no = ur.no
               			order by groupno desc, orderno asc) bo)
-			where r <![CDATA[<]]>= #{curPage}*5 and r <![CDATA[>]]> (#{curPage}-1)*5
+              			where r <= ${endRnum} and r > ${startRnum}
+		]]>
+			
+			<!-- where r <![CDATA[<]]>= #{curPage}*5 and r <![CDATA[>]]> (#{curPage}-1)*5  -->
 			
 	</select>
 	
@@ -173,7 +176,7 @@
 	</update>
 	
 	<select id="getListCnt" resultType="int">
-		select nvl(max(rownum), 0) as rmax
+		select count(*)
 		from replyboard
 	</select>
 

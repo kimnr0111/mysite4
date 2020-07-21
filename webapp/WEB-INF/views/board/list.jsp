@@ -59,7 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${bList}" var="vo" varStatus="status">
+						<c:forEach items="${pMap.bList}" var="vo" varStatus="status">
 							<tr>
 								<td>${vo.no }</td>
 								<td class="text-left">
@@ -83,11 +83,24 @@
 		
 					<div id="paging">
 						<ul>
-							<li><a href="">◀</a></li>
-							<c:forEach begin="1" end="${(listCnt-1)/5 + 1}" step="1" varStatus="status">
-								<li><a href="${pageContext.request.contextPath}/board/list?page=${status.count}">${status.count}</a></li>
+							<c:if test="${pMap.prev == true }">
+								<li><a href="${pageContext.request.contextPath}/board/list?page=${pMap.startPageBtnNo - 1}">◀</a></li>
+							</c:if>
+							
+							<c:forEach begin="${pMap.startPageBtnNo}" end="${pMap.endPageBtnNo }" step="1" var="page">
+								<c:choose>
+								<c:when test="${param.page eq page }">
+									<li class="active"><a href="${pageContext.request.contextPath}/board/list?page=${page}">${page}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/board/list?page=${page}">${page}</a></li>
+								</c:otherwise>
+								</c:choose>
 							</c:forEach>
-							<li><a href="">▶</a></li>
+							
+							<c:if test="${pMap.next == true }">
+								<li><a href="${pageContext.request.contextPath}/board/list?page=${pMap.endPageBtnNo + 1}">▶</a></li>
+							</c:if>
 						</ul>
 						
 						

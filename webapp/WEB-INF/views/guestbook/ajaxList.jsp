@@ -94,7 +94,7 @@
 				<div class="modal-body">
 					<label>비밀번호</label>
 					<input type="password" name="modalPassword" id="modalPassword"><br>	
-					<input type="text" name="modalNo" value="" id="modalNo"> <br>	
+					<input type="hidden" name="modalNo" value="" id="modalNo"> <br>	
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
@@ -116,7 +116,6 @@ $(document).ready(function(){
 
 //삭제버튼 클릭할때
 $("#guestbookListArea").on("click", "a", function(){
-	console.log("리스트 클릭");
 	event.preventDefault(); //a태그 기능 막기위해 사용
 	
 	var $this = $(this);
@@ -131,10 +130,7 @@ $("#guestbookListArea").on("click", "a", function(){
 });
 
 //모달창 삭제버튼 클릭
-$("#btnDel").on("click", function(){
-	//이벤트 체크
-	console.log("삭제버튼 클릭");
-	
+$("#btnDel").on("click", function(){	
 	//데이터 수집
 	var password = $("#modalPassword").val();
 	var no = $("#modalNo").val();
@@ -143,8 +139,8 @@ $("#btnDel").on("click", function(){
 	$.ajax({
 		url : "${pageContext.request.contextPath }/api/gb/delete",		
 		type : "post",
-		//contentType : "application/json",
-		data : {password: password, no: no},
+		contentType : "application/json",
+		data : JSON.stringify({password: password, no: no}),
 
 		dataType : "json",
 		success : function(count){
@@ -169,9 +165,6 @@ $("#btnDel").on("click", function(){
 
 //등록버튼 클릭
 $("#guestAddBtn").on("click", function(){
-	
-	console.log("클릭클릭");
-	
 	//form이 기능하지 않도록 해줌, 현재 이벤트의 기본 동작 중단
 	event.preventDefault();
 	//데이터 추출

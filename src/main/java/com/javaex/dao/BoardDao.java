@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,16 @@ public class BoardDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BoardVo> getBoardList(String search, int curPage) {
+	public List<BoardVo> getBoardList(String search, int startRnum, int endRnum) {
 		System.out.println("BoardDao:getBoardList");
 		System.out.println("search=" + search);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("startRnum", startRnum);
+		map.put("endRnum", endRnum);
 		
 		if("".equals(search)) {
 			System.out.println("기본");
-			List<BoardVo> boardList = sqlSession.selectList("board.selectList", curPage);
+			List<BoardVo> boardList = sqlSession.selectList("board.selectList", map);
 			return boardList;
 		} else {
 			System.out.println("검색");

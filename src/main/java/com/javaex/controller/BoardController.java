@@ -1,7 +1,9 @@
 package com.javaex.controller;
 
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,12 +27,11 @@ public class BoardController {
 	public String list(Model model, @RequestParam(value="search", required=false, defaultValue="") String search,
 									@RequestParam(value="page", required=false, defaultValue="1") int curPage) {
 		System.out.println("/board/list");
-		int listCnt = boardService.getList();
-		System.out.println(listCnt);
-		List<BoardVo> bList = boardService.getBoardList(search, curPage);
-		System.out.println(bList.toString());
-		model.addAttribute("bList", bList);
-		model.addAttribute("listCnt", listCnt);
+		
+		Map<String, Object> pMap = boardService.getBoardList(search, curPage);
+		System.out.println(pMap.toString());
+		model.addAttribute("pMap", pMap);
+		model.addAttribute("curPage", curPage);
 		
 		return "board/list";
 	}

@@ -40,9 +40,9 @@ public class ApiGuestbookController {
 	
 	@ResponseBody
 	@RequestMapping(value="/delete", method = {RequestMethod.POST})
-	public int delete(@ModelAttribute GuestVo guestbookVo) {
+	public int delete(@RequestBody GuestVo guestbookVo) {
 		System.out.println("/api/gb/delete");
-		
+		System.out.println(guestbookVo.toString());
 		return guestService.contentsDelete(guestbookVo);
 	}
 }
