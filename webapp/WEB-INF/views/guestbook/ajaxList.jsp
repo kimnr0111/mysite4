@@ -180,8 +180,6 @@ $("#guestAddBtn").on("click", function(){
 			content: content
 			};
 	
-	console.log(guestbookVo);
-	
 	$.ajax({
 		url : "${pageContext.request.contextPath }/api/gb/add",		
 		type : "post",
@@ -214,7 +212,7 @@ function fetchList(){
 		dataType : "json",
 		success : function(guestbookList){
 			/*성공시 처리해야될 코드 작성*/
-			
+			console.log(guestbookList);
 			for(var i=0;i<guestbookList.length;i++) {
 				render(guestbookList[i], "up");
 			}
