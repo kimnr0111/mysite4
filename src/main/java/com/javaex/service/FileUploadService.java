@@ -4,18 +4,51 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.javaex.dao.FileUploadDao;
+import com.javaex.vo.GalleryVo;
 
 @Service
 public class FileUploadService {
 	
-	public String restore(MultipartFile file) {
+	@Autowired
+	FileUploadDao fileUploadDao;
+	
+	public List<GalleryVo> getGalleryList() {
+		
+		List<GalleryVo> gList = fileUploadDao.getGalleryList();
+		
+		return gList;
+		
+	}
+	
+	public GalleryVo getGallery(int no) {
+		System.out.println("FileUploadService:getGallery");
+		
+		GalleryVo galleryVo = fileUploadDao.getGallery(no);
+		
+		return galleryVo;
+	}
+	
+	public int deleteGallery(int no) {
+		System.out.println("FileUploadService:deleteGallery");
+		
+		return fileUploadDao.deleteGallery(no);
+	}
+	
+	public String restore(MultipartFile file, int userNo, String comments) {
 		System.out.println("FileUploadService:restore");
 		//파일카피////////////////////////////////////////
 		String saveDir = "C:\\javaStudy\\upload";
+		
+		//받아온 값 체크
+		System.out.println("userNo:" + userNo + "\ncomments:" + comments);
 		
 		//원파일이름
 		String orgName = file.getOriginalFilename();
@@ -53,6 +86,9 @@ public class FileUploadService {
 			System.out.println("실패");
 		}
 		
+		GalleryVo galleryVo = new GalleryVo(0, userNo, comments, filePath, saveName, orgName, fileSize, "");
+		
+		fileUploadDao.restore(galleryVo);
 		
 		
 		return saveName;
